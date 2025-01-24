@@ -36,6 +36,12 @@ func (cf ComponentFunc) Render(ctx context.Context, w io.Writer) error {
 	return cf(ctx, w)
 }
 
+// Renders the template in a format that can me accepted by http.HandleFunc
+// Ex: http.HandleFunc("/component", component.WebRender)
+func (cf ComponentFunc) WebRender(w http.ResponseWriter, r *http.Request) {
+	cf.Render(r.Context(), w)
+}
+
 // WithNonce sets a CSP nonce on the context and returns it.
 func WithNonce(ctx context.Context, nonce string) context.Context {
 	ctx, v := getContext(ctx)
